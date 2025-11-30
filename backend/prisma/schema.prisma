@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  avatarUrl    String?
+  bio          String?
+  socialLinks  String?  // JSON string
+  role         String   @default("user") // "admin" | "user"
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  blogs        Blog[]
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+model Blog {
+  id           String   @id @default(uuid())
+  title        String
+  content      String   // Markdown content
+  authorId     String
+  isPublic     Boolean  @default(true)
+  thumbnailUrl String?
+  categoryId   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  author   User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category BlogCategory? @relation(fields: [categoryId], references: [id])
+  media    BlogMedia[]
+
+  @@map("blogs")
+}
+
+model BlogCategory {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  blogs     Blog[]
+
+  @@map("blog_categories")
+}
+
+model BlogMedia {
+  id      String   @id @default(uuid())
+  blogId  String
+  url     String
+  type    String   // "image" | "video"
+  createdAt DateTime @default(now())
+
+  blog    Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
+
+  @@map("blog_media")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("password_reset_tokens")
+}
+
