@@ -19,6 +19,19 @@ const nextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-src 'self' https://cdn.grammarly.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.grammarly.com",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

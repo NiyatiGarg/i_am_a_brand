@@ -24,21 +24,40 @@ export default function ContactPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
+    mode: 'onBlur', // Validate on blur instead of onChange
   });
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     try {
-      // In a real app, you'd send this to your backend
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log('Submitting form with data:', data);
+      
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to send message');
+      }
+
+      const result = await response.json();
+      console.log('Success response:', result);
       toast.success('Message sent successfully!');
       reset();
     } catch (error) {
-      toast.error('Failed to send message');
+      console.error('Submit error:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to send message');
     } finally {
       setIsSubmitting(false);
     }
@@ -52,25 +71,38 @@ export default function ContactPage() {
         <div className="max-w-2xl mx-auto">
           <Card>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <Input
-                label="Name"
-                {...register('name')}
-                error={errors.name?.message}
-              />
-              <Input
-                label="Email"
-                type="email"
-                {...register('email')}
-                error={errors.email?.message}
-              />
-              <Textarea
-                label="Message"
-                rows={6}
-                {...register('message')}
-                error={errors.message?.message}
-              />
-              <Button type="submit" isLoading={isSubmitting}>
-                Send Message
+              <div>
+                <Input
+                  label="Name"
+                  {...register('name')}
+                  error={errors.name?.message}
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div>
+                <Input
+                  label="Email"
+                  type="email"
+                  {...register('email')}
+                  error={errors.email?.message}
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div>
+                <Textarea
+                  label="Message"
+                  rows={6}
+                  {...register('message')}
+                  error={errors.message?.message}
+                  disabled={isSubmitting}
+                />
+              </div>
+              <Button 
+                type="submit" 
+                isLoading={isSubmitting}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </Button>
             </form>
           </Card>
@@ -80,7 +112,7 @@ export default function ContactPage() {
             <h2 className="text-2xl font-bold mb-6">Connect With Me</h2>
             <div className="flex justify-center gap-6">
               <a
-                href="https://github.com"
+                href="https://github.com/NiyatiGarg"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-primary-600 transition-colors"
@@ -88,7 +120,7 @@ export default function ContactPage() {
                 GitHub
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/niyati-garg-59b385211/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-primary-600 transition-colors"
@@ -96,7 +128,7 @@ export default function ContactPage() {
                 LinkedIn
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/she_the_avenger_girl/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-primary-600 transition-colors"

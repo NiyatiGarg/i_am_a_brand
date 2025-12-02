@@ -1,10 +1,21 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Card } from '@/components/Card';
+import fitness1 from './fitness1.jpeg';
+import fitness2 from './fitness2.jpeg';
+import fitness3 from './fitness3.jpeg';
+import fitness4 from './fitness4.jpeg';  
+import fitness5 from './fitness5.jpeg';
+import fitness6 from './fitness6.jpeg';
+import fitness7 from './fitness7.jpeg';
+import fitness8 from './fitness8.jpeg';
 
 export const metadata: Metadata = {
   title: 'Fitness | Personal Brand Website',
   description: 'My fitness journey, workout routines, and wellness tips',
 };
+
+const gallery= [fitness1, fitness2, fitness3, fitness4, fitness5, fitness6, fitness7, fitness8];
 
 const quotes = [
   'The only bad workout is the one that didn\'t happen.',
@@ -24,7 +35,7 @@ const routines = [
   },
   {
     title: 'Full Body HIIT',
-    exercises: ['Burpees', 'Mountain Climbers', 'Jump Squats', 'Push-ups', 'Plank'],
+    exercises: ['Burpees', 'Monkey Bar', 'Jump Squats', 'Push-ups', 'Plank'],
   },
 ];
 
@@ -36,7 +47,7 @@ export default function FitnessPage() {
 
         {/* Motivational Quotes */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 text-center">Motivational Quotes</h2>
+          {/* <h2 className="text-3xl font-bold mb-6 text-center">Motivational Quotes</h2> */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {quotes.map((quote, index) => (
               <Card key={index}>
@@ -50,13 +61,13 @@ export default function FitnessPage() {
         <section className="mb-12">
           <h2 className="text-3xl font-bold mb-6 text-center">Gallery</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
+            {gallery.map((img , i) => (
               <div
                 key={i}
                 className="aspect-square bg-gray-200 rounded-lg overflow-hidden"
               >
                 <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-gray-400">Fitness Photo {i}</span>
+                   <Image src={img} alt={'fitness img'} />
                 </div>
               </div>
             ))}
@@ -83,7 +94,7 @@ export default function FitnessPage() {
           </div>
         </section>
 
-        {/* Instagram Embed Placeholder */}
+        {/* Instagram Embed Placeholder
         <section>
           <h2 className="text-3xl font-bold mb-6 text-center">Follow My Journey</h2>
           <Card className="max-w-2xl mx-auto">
@@ -91,7 +102,7 @@ export default function FitnessPage() {
               <p className="text-gray-400">Instagram Embed Placeholder</p>
             </div>
           </Card>
-        </section>
+        </section> */}
       </div>
     </div>
   );

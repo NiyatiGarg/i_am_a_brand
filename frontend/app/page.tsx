@@ -15,21 +15,22 @@ export default function HomePage() {
               Welcome to my personal brand website
             </p>
             <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/about">
+                <Button variant="outline" className="border-white text-white hover:bg-white/50" >
+                  About Me
+                </Button>
+              </Link>
               <Link href="/portfolio">
-                <Button variant="secondary" className="bg-white text-primary-600 hover:bg-gray-100">
+                <Button variant="outline" className="border-white text-white hover:bg-white/50">
                   View Portfolio
                 </Button>
               </Link>
               <Link href="/blog">
-                <Button variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button variant="outline" className="border-white text-white hover:bg-white/50">
                   Read Blog
                 </Button>
               </Link>
-              <Link href="/about">
-                <Button variant="outline" className="border-white text-white hover:bg-white/10">
-                  About Me
-                </Button>
-              </Link>
+              
             </div>
           </div>
         </div>
@@ -40,7 +41,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex justify-center gap-6">
             <a
-              href="https://github.com"
+              href="https://github.com/NiyatiGarg"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-primary-600 transition-colors"
@@ -51,7 +52,7 @@ export default function HomePage() {
               </svg>
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/niyati-garg-59b385211/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-primary-600 transition-colors"
@@ -62,7 +63,7 @@ export default function HomePage() {
               </svg>
             </a>
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/she_the_avenger_girl/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-primary-600 transition-colors"
