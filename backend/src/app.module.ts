@@ -8,6 +8,7 @@ import { BlogCategoryModule } from './blog-category/blog-category.module';
 import { CommonModule } from './common/common.module';
 import { DatabaseModule } from './database/database.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     BlogModule,
     BlogCategoryModule,
   ],
+  controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,

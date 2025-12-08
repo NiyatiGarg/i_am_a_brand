@@ -22,7 +22,7 @@ export default function AboutPage() {
     blogging: false,
   });
 
-  const toggleSection = (section: string) => {
+  const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections((prev) => ({
       ...prev,
       [section]: !prev[section],

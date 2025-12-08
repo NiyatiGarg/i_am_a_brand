@@ -80,7 +80,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async logout(@Req() req: Request, @Res() res: Response) {
     const refreshToken = req.cookies?.refreshToken;
-    await this.authService.logout(req.user.id, refreshToken);
+    await this.authService.logout((req.user as any).id, refreshToken);
 
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');

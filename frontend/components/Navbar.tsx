@@ -59,16 +59,16 @@ export function Navbar() {
             {user ? (
               <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
                 <Link href="/manage/blogs">
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline">
                     Manage Blogs
                   </Button>
                 </Link>
                 <Link href={`/profile/${user.id}`}>
-                  <Button variant="secondary" size="sm">
+                  <Button variant="secondary">
                     Profile
                   </Button>
                 </Link>
-                <Button variant="secondary" size="sm" onClick={logout}>
+                <Button variant="secondary" onClick={logout}>
                   Logout
                 </Button>
               </div>
