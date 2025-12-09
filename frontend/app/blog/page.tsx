@@ -150,7 +150,7 @@ export default function BlogListPage() {
                     {/* IMAGE */}
                     <div className="relative h-44 mb-4 rounded-lg overflow-hidden">
                       <Image
-                        src={item.thumbnailUrl}
+                        src={item.thumbnailUrl || sugar}
                         alt={item.title}
                         fill
                         className="object-cover hover:scale-105 transition-transform"
