@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Card } from '@/components/Card';
 
 export const metadata: Metadata = {
-  title: 'Dance & Music | Personal Brand Website',
+  title: 'Dance & Music | Niyati Garg',
   description: 'My creative journey in dance and music',
 };
 

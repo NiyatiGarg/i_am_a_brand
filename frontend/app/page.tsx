@@ -5,41 +5,56 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white py-20">
-        <div className="container mx-auto px-4">
+      <section className="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16 md:py-24 min-h-[80vh] sm:min-h-[85vh] md:min-h-screen flex items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center animate-fade-in">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight mb-4 md:mb-6">
               Frontend Developer | Fitness & Lifestyle Creator | Dance & Music Enthusiast
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-primary-100">
+
+            <p className="text-lg sm:text-xl md:text-2xl mb-6 md:mb-8 text-primary-100">
               Welcome to my personal brand website
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+
+            {/* Buttons */}
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
               <Link href="/about">
-                <Button variant="outline" className="border-white text-white hover:bg-white/50" >
+                <Button
+                  variant="outline"
+                  className="border-white text-white hover:bg-white/40 px-5 py-2 sm:px-6 sm:py-3"
+                >
                   About Me
                 </Button>
               </Link>
+
               <Link href="/portfolio">
-                <Button variant="outline" className="border-white text-white hover:bg-white/50">
+                <Button
+                  variant="outline"
+                  className="border-white text-white hover:bg-white/40 px-5 py-2 sm:px-6 sm:py-3"
+                >
                   View Portfolio
                 </Button>
               </Link>
+
               <Link href="/blog">
-                <Button variant="outline" className="border-white text-white hover:bg-white/50">
+                <Button
+                  variant="outline"
+                  className="border-white text-white hover:bg-white/40 px-5 py-2 sm:px-6 sm:py-3"
+                >
                   Read Blog
                 </Button>
               </Link>
-              
             </div>
           </div>
         </div>
       </section>
 
       {/* Social Icons */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center gap-6">
+      <section className="py-10 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center gap-6 sm:gap-8 flex-wrap">
+            
+            {/* GitHub */}
             <a
               href="https://github.com/NiyatiGarg"
               target="_blank"
@@ -48,9 +63,23 @@ export default function HomePage() {
               aria-label="GitHub"
             >
               <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                <path 
+                  d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 
+                  3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 
+                  0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.547-1.387-1.337-1.757-1.337-1.757-1.091-.746.084-.73.084-.73 
+                  1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.807 1.305 
+                  3.495.997.108-.776.418-1.305.762-1.604-2.665-.3-5.466-1.332-5.466-5.93 
+                  0-1.31.469-2.381 1.235-3.221-.135-.303-.54-1.52.105-3.176 
+                  0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.404 
+                  1.02.005 2.04.137 3 .404 2.28-1.552 3.285-1.23 3.285-1.23 
+                  .645 1.656.24 2.873.12 3.176.765.84 1.23 1.911 1.23 3.221 
+                  0 4.61-2.805 5.625-5.475 5.92.42.372.81 1.102.81 2.222 
+                  0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                />
               </svg>
             </a>
+
+            {/* LinkedIn */}
             <a
               href="https://www.linkedin.com/in/niyati-garg-59b385211/"
               target="_blank"
@@ -59,9 +88,20 @@ export default function HomePage() {
               aria-label="LinkedIn"
             >
               <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                <path 
+                  d="M22.23 0H1.77C.79 0 0 .774 0 1.729v20.542C0 
+                  23.226.79 24 1.77 24h20.46c.98 0 1.77-.774 1.77-1.729V1.729C24 
+                  .774 23.21 0 22.23 0zM7.12 20.452H3.56V9h3.56v11.452zM5.34 
+                  7.433c-1.14 0-2.06-.926-2.06-2.065 0-1.138.92-2.063 
+                  2.06-2.063s2.07.925 2.07 2.063c0 1.139-.93 2.065-2.07 
+                  2.065zM20.45 20.452h-3.55v-5.57c0-1.327-.03-3.037-1.86-3.037-1.86 
+                  0-2.14 1.445-2.14 2.94v5.667H9.35V9h3.41v1.56h.05c.47-.9 
+                  1.63-1.85 3.36-1.85 3.6 0 4.28 2.37 4.28 5.455v6.286z"
+                />
               </svg>
             </a>
+
+            {/* Instagram */}
             <a
               href="https://www.instagram.com/she_the_avenger_girl/"
               target="_blank"
@@ -70,7 +110,23 @@ export default function HomePage() {
               aria-label="Instagram"
             >
               <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                <path 
+                  d="M12 2.163c3.205 0 3.584.012 4.85.07 
+                  3.252.148 4.77 1.692 4.92 4.92.058 1.265.07 
+                  1.645.07 4.847 0 3.205-.012 3.585-.07 
+                  4.85-.15 3.225-1.67 4.77-4.92 4.92-1.266.058-1.645.07-4.85.07s-3.585-.012-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.175 
+                  15.585 2.163 15.205 2.163 12c0-3.202.012-3.582.07-4.847 
+                  .15-3.227 1.66-4.77 4.92-4.92 1.265-.058 1.645-.07 
+                  4.847-.07zM12 0C8.74 0 8.332.014 7.052.072 2.695.272.272 
+                  2.695.072 7.052 0 8.332 0 8.74 0 12c0 3.26.014 3.668.072 
+                  4.948.2 4.357 2.623 6.78 6.98 6.98C8.332 
+                  24 8.74 24 12 24s3.668-.014 4.948-.072c4.354-.2 
+                  6.782-2.623 6.98-6.98.058-1.28.072-1.689.072-4.948 
+                  0-3.26-.014-3.668-.072-4.948-.2-4.354-2.626-6.78-6.98-6.98C15.668.014 
+                  15.26 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 
+                  6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 
+                  8zm6.406-11.845a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z"
+                />
               </svg>
             </a>
           </div>
@@ -79,4 +135,3 @@ export default function HomePage() {
     </div>
   );
 }
-
