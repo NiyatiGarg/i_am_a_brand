@@ -20,6 +20,13 @@ module.exports = {
           800: '#075985',
           900: '#0c4a6e',
         },
+        navy: {
+          DEFAULT: '#0f172a',
+          dark: '#0b1220',
+        },
+        coral: {
+          DEFAULT: '#ff6b35',
+        },
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

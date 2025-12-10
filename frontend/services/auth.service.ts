@@ -55,5 +55,10 @@ export const authService = {
     const response = await api.post<{ message: string }>('/auth/reset-password', data);
     return response.data;
   },
+
+  async adminLogin(data: LoginData): Promise<AuthResponse> {
+    const response = await api.post<AuthResponse>('/auth/admin/login', data);
+    return response.data;
+  },
 };
 

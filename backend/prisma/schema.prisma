@@ -41,15 +41,21 @@ model RefreshToken {
 }
 
 model Blog {
-  id           String   @id @default(uuid())
-  title        String
-  content      String   // Markdown content
-  authorId     String
-  isPublic     Boolean  @default(true)
-  thumbnailUrl String?
-  categoryId   String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id             String   @id @default(uuid())
+  title          String
+  slug           String   @unique
+  content        String   // Markdown or HTML content
+  excerpt        String?  // First 150 chars or custom excerpt
+  authorId       String
+  isPublic       Boolean  @default(true)
+  status         String   @default("draft") // "draft" | "published"
+  thumbnailUrl   String?
+  thumbnailSource String? // "upload" | "external"
+  categoryId     String?
+  tags           String?  // JSON array string
+  publishedAt    DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   author   User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
   category BlogCategory? @relation(fields: [categoryId], references: [id])
@@ -88,5 +94,25 @@ model PasswordResetToken {
   createdAt DateTime @default(now())
 
   @@map("password_reset_tokens")
+}
+
+model SiteMeta {
+  id        String   @id @default("site_meta")
+  homepage  String?  // JSON string with hero, about, highlights, etc.
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+
+  @@map("site_meta")
+}
+
+model Gallery {
+  id          String   @id @default(uuid())
+  url         String
+  alt         String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("gallery")
 }
 

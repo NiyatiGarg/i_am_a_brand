@@ -5,62 +5,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { useApi } from "@/hooks/useApi";
 import { Blog, BlogCategory, PaginatedResponse } from "@/types";
+import { blogCategoryService } from "@/services/blog.service";
+import { Card } from "@/components/Card";
 import { Input } from "@/components/Input";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { format } from "date-fns";
-import skincare from './skincare.avif';
-import sugar from './sugar.webp';
-import tech from './tech.jpg'
-
-// ------------------ FEATURED ONLINE ARTICLES ------------------
-const featuredReads = [
-  {
-    id: "f1",
-    title: "How Sugar Affects Your Skin & Hormones",
-    summary:
-      "A beautifully written scientific breakdown on how sugar impacts acne, inflammation, and overall skin health.",
-    thumbnailUrl: sugar,
-    source: "DermaQuest",
-    sourceUrl:
-      "https://evergreen-blogs.blogspot.com/2025/11/our-relationship-with-sugar.html",
-    publishedAt: "Dec 2025",
-    category: "Wellness",
-  },
-  {
-    id: "f2",
-    title: "Frontend Performance: The Ultimate Guide",
-    summary:
-      "One of the best articles explaining real-world frontend optimization, perceived performance, and UX speed.",
-    thumbnailUrl: tech,
-    source: "medium.com",
-    sourceUrl:
-      "https://medium.com/@priyankadaida/ultimate-guide-to-front-end-performance-optimization-7e839a1bca35",
-    publishedAt: "Nov 2024",
-    category: "Tech",
-  },
-  {
-    id: "f3",
-    title: "Understanding Acne: A Dermatologist's Perspective",
-    summary:
-      "A dermatologist deep-dives into acne causes, treatments, myths, and real science behind clear skin.",
-    thumbnailUrl: skincare,
-    source: "DermaQuest",
-    sourceUrl:
-      "https://dermaquest.web.app/blog/17/Importance%20of%20Skin%20care",
-    publishedAt: "Oct 2025",
-    category: "Skincare",
-  },
-];
 
 export default function BlogListPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
-  // Fetch Categories
   const { data: categories } = useApi<BlogCategory[]>("/blog-category");
-
-  // Fetch Blogs
   const { data, error, isLoading } = useApi<PaginatedResponse<Blog>>(
     `/blog?page=${page}&limit=9&search=${search}&categoryId=${selectedCategory}`
   );
@@ -68,17 +24,39 @@ export default function BlogListPage() {
   const blogs = data?.blogs || [];
   const pagination = data?.pagination;
 
-  const showFeaturedReads = !isLoading && blogs.length === 0;
-
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-16">
-
-        {/* PAGE TITLE */}
-        <h1 className="text-4xl font-bold mb-6 text-center">Blog</h1>
-
-        {/* SEARCH BAR */}
-        <div className="max-w-4xl mx-auto mb-6">
+        <h1 className="text-4xl font-bold mb-8 text-center">Blog</h1>
+        <p className="p-5">
+          My content-writing journey started back in college, where I discovered
+          how much I enjoy expressing ideas and sharing knowledge through words.
+          Since then, I’ve continued writing whenever a topic excites me. For
+          example, one of my recent well-researched blogs was about cutting off
+          sugar and understanding our relationship with it.
+          <br />
+          <br />
+          Skincare has also been a huge part of my life. I developed acne early,
+          and because of that, I tried every possible remedy and experiment.
+          Over time, I learned what actually works, what’s a myth, and why
+          personalized skincare routines matter. Today, I’ve accepted myself as
+          I am — but I also carry deep respect for proper skin care based on
+          specific skin types.
+          <br />
+          <br />
+          In the early days, I posted all kinds of blogs — skincare tips, fun
+          topics, food, tech — on Blogger.com. But eventually, I wanted
+          something that felt more personal and fully mine. So I created my own
+          Skincare AI Website, bringing together my technical skills and love
+          for skincare. The platform focuses on providing helpful,
+          well-researched content to both men and women. Now, I’ve built this
+          all-in-one personal website where I can post everything — development
+          blogs, skincare topics, lifestyle, fitness, and personal growth. It’s
+          my organized, creative space to keep everything I write in one place
+          and share it with others.
+        </p>
+        {/* Search and Filter */}
+        <div className="max-w-4xl mx-auto mb-8 space-y-4">
           <Input
             type="text"
             placeholder="Search blogs..."
@@ -88,127 +66,73 @@ export default function BlogListPage() {
               setPage(1);
             }}
           />
+
+          {categories && categories.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setSelectedCategory("")}
+                className={`px-4 py-2 rounded-lg ${
+                  selectedCategory === ""
+                    ? "bg-primary-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
+                All
+              </button>
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => {
+                    setSelectedCategory(category.id);
+                    setPage(1);
+                  }}
+                  className={`px-4 py-2 rounded-lg ${
+                    selectedCategory === category.id
+                      ? "bg-primary-600 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* CATEGORY FILTERS */}
-        <div className="max-w-4xl mx-auto flex gap-2 overflow-x-auto pb-3 mb-8">
-          <button
-            onClick={() => setSelectedCategory("")}
-            className={`px-4 py-2 rounded-full whitespace-nowrap ${
-              selectedCategory === ""
-                ? "bg-primary-600 text-white"
-                : "bg-gray-200 text-gray-700"
-            }`}
-          >
-            All
-          </button>
-
-          {categories?.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 rounded-full whitespace-nowrap ${
-                selectedCategory === cat.id
-                  ? "bg-primary-600 text-white"
-                  : "bg-gray-200 text-gray-700"
-              }`}
-            >
-              {cat.name}
-            </button>
-          ))}
-        </div>
-
-        {/* LOADING */}
-        {isLoading && (
+        {/* Blog List */}
+        {isLoading ? (
           <div className="flex justify-center py-12">
             <LoadingSpinner size="lg" />
           </div>
-        )}
-
-        {/* FEATURED READS (when backend has 0 blogs) */}
-        {showFeaturedReads && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4 text-center">
-           While we prepare personal blogs, here are some of my favorite reads
-            </h2>
-            <p className="text-center text-gray-600 max-w-2xl mx-auto mb-8">
-              These are handpicked articles that inspired my skincare knowledge,
-              development journey, and personal growth.
-            </p>
-
-            {/* FEATURED READS GRID */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredReads.map((item) => (
-                <a
-                  key={item.id}
-                  href={item.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <div className="bg-white rounded-xl shadow hover:shadow-lg transition p-4 cursor-pointer">
-                    
-                    {/* IMAGE */}
-                    <div className="relative h-44 mb-4 rounded-lg overflow-hidden">
-                      <Image
-                        src={item.thumbnailUrl || tech}
-                        alt={item.title}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform"
-                      />
-                    </div>
-
-                    {/* CATEGORY */}
-                    <span className="text-xs font-medium bg-gray-100 px-2 py-1 rounded-full mb-2 inline-block">
-                      {item.category}
-                    </span>
-
-                    {/* TITLE */}
-                    <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
-
-                    {/* SUMMARY */}
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                      {item.summary}
-                    </p>
-
-                    {/* SOURCE */}
-                    <div className="flex justify-between items-center text-sm text-gray-500">
-                      <span>{item.source}</span>
-                      <span>{item.publishedAt}</span>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
+        ) : error ? (
+          <div className="text-center py-12 text-red-600">
+            Error loading blogs
           </div>
-        )}
-
-        {/* ACTUAL BLOG LIST */}
-        {!showFeaturedReads && !isLoading && !error && blogs.length > 0 && (
+        ) : blogs.length === 0 ? (
+          <div className="text-center py-12 text-gray-500">No blogs found</div>
+        ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {blogs.map((blog) => (
-                <Link key={blog.id} href={`/blog/${blog.id}`}>
-                  <div className="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
-                    
-                    {/* THUMBNAIL */}
-                    <div className="relative h-44 mb-4 rounded-lg overflow-hidden">
-                      <Image
-                        src={blog.thumbnailUrl|| tech}
-                        alt={blog.title}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform"
-                      />
-                    </div>
-
-                    {/* TITLE */}
-                    <h2 className="text-lg font-semibold mb-2">{blog.title}</h2>
-
+                  <Link key={blog.id} href={blog.slug ? `/blog/${blog.slug}` : `/blog/${blog.id}`}>
+                  <Card className="h-full hover:scale-105 transition-transform">
+                    {blog.thumbnailUrl && (
+                      <div className="aspect-video mb-4 relative overflow-hidden rounded-lg">
+                        <Image
+                          src={blog.thumbnailUrl}
+                          alt={blog.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
+                    <h2 className="text-xl font-bold mb-2 line-clamp-2">
+                      {blog.title}
+                    </h2>
                     <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                      {blog.content}
+                      {blog.content.substring(0, 150)}...
                     </p>
-
-                    {/* AUTHOR + DATE */}
-                    <div className="flex justify-between text-sm text-gray-500">
+                    <div className="flex items-center justify-between text-sm text-gray-500">
                       <div className="flex items-center gap-2">
                         {blog.author?.avatarUrl && (
                           <Image
@@ -221,15 +145,16 @@ export default function BlogListPage() {
                         )}
                         <span>{blog.author?.name}</span>
                       </div>
-
-                      <span>{format(new Date(blog.createdAt), "MMM d, yyyy")}</span>
+                      <span>
+                        {format(new Date(blog.createdAt), "MMM d, yyyy")}
+                      </span>
                     </div>
-                  </div>
+                  </Card>
                 </Link>
               ))}
             </div>
 
-            {/* PAGINATION */}
+            {/* Pagination */}
             {pagination && pagination.totalPages > 1 && (
               <div className="flex justify-center gap-2">
                 <button
@@ -255,8 +180,6 @@ export default function BlogListPage() {
             )}
           </>
         )}
-
-       
       </div>
     </div>
   );

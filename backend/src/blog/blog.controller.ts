@@ -50,6 +50,13 @@ export class BlogController {
   }
 
   @Public()
+  @Get('slug/:slug')
+  async findBySlug(@Param('slug') slug: string, @Req() req: any) {
+    const userId = req.user?.id;
+    return this.blogService.findBySlug(slug, userId);
+  }
+
+  @Public()
   @Get(':id')
   async findOne(@Param('id') id: string, @Req() req: any) {
     const userId = req.user?.id;

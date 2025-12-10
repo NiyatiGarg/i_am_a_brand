@@ -3,18 +3,29 @@ import { Blog, BlogCategory, PaginatedResponse } from '@/types';
 
 export interface CreateBlogData {
   title: string;
+  slug?: string;
   content: string;
+  excerpt?: string;
   isPublic?: boolean;
+  status?: string; // "draft" | "published"
   categoryId?: string;
   thumbnailUrl?: string;
+  thumbnailSource?: string; // "upload" | "external"
+  tags?: string[];
 }
 
 export interface UpdateBlogData {
   title?: string;
+  slug?: string;
   content?: string;
+  excerpt?: string;
   isPublic?: boolean;
+  status?: string; // "draft" | "published"
   categoryId?: string;
   thumbnailUrl?: string;
+  thumbnailSource?: string; // "upload" | "external"
+  tags?: string[];
+  publishedAt?: Date;
 }
 
 export interface BlogListParams {
@@ -32,6 +43,11 @@ export const blogService = {
 
   async getBlog(id: string): Promise<Blog> {
     const response = await api.get<Blog>(`/blog/${id}`);
+    return response.data;
+  },
+
+  async getBlogBySlug(slug: string): Promise<Blog> {
+    const response = await api.get<Blog>(`/blog/slug/${slug}`);
     return response.data;
   },
 

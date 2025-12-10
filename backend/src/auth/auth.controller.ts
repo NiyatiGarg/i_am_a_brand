@@ -148,5 +148,77 @@ export class AuthController {
   async getMe(@Req() req: Request) {
     return req.user;
   }
+
+  @Public()
+  @Post('admin/login')
+  @HttpCode(HttpStatus.OK)
+  async adminLogin(@Body() loginDto: LoginDto, @Res() res: Response) {
+    const { email, password } = loginDto;
+    const adminEmail = this.configService.get<string>('ADMIN_EMAIL');
+    const adminPasswordHash = this.configService.get<string>('ADMIN_PASSWORD_HASH');
+    const adminName = this.configService.get<string>('ADMIN_NAME') || 'Niyati Garg';
+
+    // Check if email matches admin email
+    if (!adminEmail || email !== adminEmail) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        error: 'restricted',
+        message: 'Only admin (Niyati Garg) is allowed to access editing mode.',
+      });
+    }
+
+    // Verify password
+    if (!adminPasswordHash) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        error: 'configuration_error',
+        message: 'Admin password not configured',
+      });
+    }
+
+    const bcrypt = require('bcrypt');
+    const isPasswordValid = await bcrypt.compare(password, adminPasswordHash);
+
+    if (!isPasswordValid) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        error: 'restricted',
+        message: 'Only admin (Niyati Garg) is allowed to access editing mode.',
+      });
+    }
+
+    // Generate tokens for admin user
+    const payload = { sub: 'admin', email, role: 'admin', name: adminName };
+    const accessToken = this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('JWT_SECRET'),
+      expiresIn: this.configService.get<string>('JWT_EXPIRES_IN') || '15m',
+    });
+
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+      expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRES_IN') || '7d',
+    });
+
+    // Set cookies
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 15 * 60 * 1000,
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.json({
+      user: {
+        id: 'admin',
+        email,
+        name: adminName,
+        role: 'admin',
+      },
+    });
+  }
 }
 

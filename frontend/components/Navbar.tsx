@@ -1,16 +1,27 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useAdmin } from '@/context/AdminContext';
 import { Button } from './Button';
+<<<<<<< Updated upstream
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+=======
+import { AdminLoginModal } from './AdminLoginModal';
+>>>>>>> Stashed changes
 
 export function Navbar() {
   const { user, logout } = useAuth();
+  const { isAdmin, isEditing, setIsEditing } = useAdmin();
   const pathname = usePathname();
+<<<<<<< Updated upstream
   const [isOpen, setIsOpen] = useState(false);
+=======
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+>>>>>>> Stashed changes
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -44,6 +55,7 @@ export function Navbar() {
             <Link href="/contact" className={navLinkClass("/contact")}>Contact</Link>
 
             {user ? (
+<<<<<<< Updated upstream
               <div className="flex items-center gap-2 ml-4">
                 <Link href="/manage/blogs">
                   <Button variant="outline">Manage Blogs</Button>
@@ -57,6 +69,38 @@ export function Navbar() {
               <Link href="/login" className="ml-4">
                 {/* <Button>Login</Button> */}
               </Link>
+=======
+              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
+                {isAdmin && (
+                  <Button
+                    variant={isEditing ? 'primary' : 'outline'}
+                    size="sm"
+                    onClick={() => setIsEditing(!isEditing)}
+                  >
+                    {isEditing ? 'Exit Edit' : 'Edit Mode'}
+                  </Button>
+                )}
+                <Link href="/manage/blogs">
+                  <Button variant="outline" size="sm">
+                    Manage Blogs
+                  </Button>
+                </Link>
+                <Link href={`/profile/${user.id}`}>
+                  <Button variant="secondary" size="sm">
+                    Profile
+                  </Button>
+                </Link>
+                <Button variant="secondary" size="sm" onClick={logout}>
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <div className="ml-4 pl-4 border-l border-gray-200">
+                <Button size="sm" onClick={() => setShowAdminLogin(true)}>
+                  Admin Login
+                </Button>
+              </div>
+>>>>>>> Stashed changes
             )}
           </div>
 
@@ -70,6 +114,7 @@ export function Navbar() {
           </button>
         </div>
       </div>
+<<<<<<< Updated upstream
 
       {/* Mobile Menu Overlay — FIXED, DOES NOT PUSH CONTENT */}
       {isOpen && (
@@ -130,6 +175,9 @@ export function Navbar() {
           </div>
         </div>
       )}
+=======
+      <AdminLoginModal isOpen={showAdminLogin} onClose={() => setShowAdminLogin(false)} />
+>>>>>>> Stashed changes
     </nav>
   );
 }

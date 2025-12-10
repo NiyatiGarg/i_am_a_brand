@@ -5,6 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { BlogModule } from './blog/blog.module';
 import { BlogCategoryModule } from './blog-category/blog-category.module';
+import { SiteMetaModule } from './site-meta/site-meta.module';
+import { GalleryModule } from './gallery/gallery.module';
 import { CommonModule } from './common/common.module';
 import { DatabaseModule } from './database/database.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
@@ -22,6 +24,8 @@ import { AppController } from './app.controller';
     UserModule,
     BlogModule,
     BlogCategoryModule,
+    SiteMetaModule,
+    GalleryModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,15 +1,27 @@
-import { IsString, IsOptional, IsBoolean, IsUUID } from 'class-validator';
+import { IsString, IsOptional, IsBoolean, IsUUID, IsArray } from 'class-validator';
 
 export class CreateBlogDto {
   @IsString()
   title: string;
 
+  @IsOptional()
   @IsString()
-  content: string; // Markdown content
+  slug?: string;
+
+  @IsString()
+  content: string; // Markdown or HTML content
+
+  @IsOptional()
+  @IsString()
+  excerpt?: string;
 
   @IsOptional()
   @IsBoolean()
   isPublic?: boolean;
+
+  @IsOptional()
+  @IsString()
+  status?: string; // "draft" | "published"
 
   @IsOptional()
   @IsUUID()
@@ -18,5 +30,13 @@ export class CreateBlogDto {
   @IsOptional()
   @IsString()
   thumbnailUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  thumbnailSource?: string; // "upload" | "external"
+
+  @IsOptional()
+  @IsArray()
+  tags?: string[];
 }
 

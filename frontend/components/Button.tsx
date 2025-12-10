@@ -3,6 +3,7 @@ import React from 'react';
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline';
   isLoading?: boolean;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export function Button({
@@ -10,6 +11,7 @@ export function Button({
   variant = 'primary',
   isLoading = false,
   disabled,
+  size = 'md',
   className = '',
   ...props
 }: ButtonProps) {
@@ -19,10 +21,15 @@ export function Button({
     secondary: 'btn-secondary',
     outline: 'btn-outline',
   };
+  const sizeClasses = {
+    sm: 'px-2 py-1 text-xs',
+    md: 'px-4 py-2 text-sm',
+    lg: 'px-6 py-3 text-base',
+  };
 
   return (
     <button
-      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
       disabled={disabled || isLoading}
       {...props}
     >

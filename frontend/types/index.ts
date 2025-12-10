@@ -12,11 +12,17 @@ export interface User {
 export interface Blog {
   id: string;
   title: string;
+  slug?: string;
   content: string;
+  excerpt?: string;
   authorId: string;
   isPublic: boolean;
+  status?: string; // "draft" | "published"
   thumbnailUrl?: string;
+  thumbnailSource?: string; // "upload" | "external"
   categoryId?: string;
+  tags?: string[];
+  publishedAt?: string;
   createdAt: string;
   updatedAt: string;
   author?: User;

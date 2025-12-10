@@ -1,10 +1,57 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { useApi } from '@/hooks/useApi';
+import { blogService } from '@/services/blog.service';
+import { siteService } from '@/services/site.service';
+import { galleryService } from '@/services/gallery.service';
+import { useAdmin } from '@/context/AdminContext';
+import { AdminToolbar } from '@/components/AdminToolbar';
+import { AnimatedBackground } from '@/components/AnimatedBackground';
 import { Button } from '@/components/Button';
+import { format } from 'date-fns';
+import type { Blog } from '@/types';
+import type { GalleryImage } from '@/services/gallery.service';
+import type { SiteMeta } from '@/services/site.service';
+import toast from 'react-hot-toast';
 
 export default function HomePage() {
+  const { isAdmin, isEditing, setPendingChanges } = useAdmin();
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+
+  // Fetch data
+  const { data: siteMeta, mutate: mutateSiteMeta } = useApi<SiteMeta>('/site');
+  const { data: blogsData } = useApi<{ blogs: Blog[]; pagination: any }>('/blog?page=1&limit=3');
+  const { data: galleryImages, mutate: mutateGallery } = useApi<GalleryImage[]>('/gallery?limit=6');
+
+  const latestBlogs = blogsData?.blogs || [];
+  const gallery = galleryImages || [];
+
+  const handleAboutUpdate = async (newHtml: string) => {
+    if (!siteMeta) return;
+    try {
+      await siteService.updateSiteMeta({
+        ...siteMeta.homepage,
+        about: { html: newHtml },
+      });
+      mutateSiteMeta();
+      setPendingChanges(false);
+      toast.success('About section updated');
+    } catch (error: any) {
+      toast.error('Failed to update about section');
+    }
+  };
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      <AnimatedBackground />
+      <AdminToolbar />
+      
       {/* Hero Section */}
+<<<<<<< Updated upstream
       <section className="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16 md:py-24 min-h-[80vh] sm:min-h-[85vh] md:min-h-screen flex items-center">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center animate-fade-in">
@@ -32,23 +79,50 @@ export default function HomePage() {
                   variant="outline"
                   className="border-white text-white hover:bg-white/40 px-5 py-2 sm:px-6 sm:py-3"
                 >
+=======
+      <section className="relative bg-gradient-to-br from-navy to-navy-dark text-white py-20 md:py-32">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              {siteMeta?.homepage?.hero?.name || 'Niyati Garg'}
+            </h1>
+            <p className="text-xl md:text-2xl mb-4 text-gray-200">
+              {siteMeta?.homepage?.hero?.tagline || 'Frontend Developer | Fitness & Lifestyle Creator'}
+            </p>
+            <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-2xl mx-auto">
+              {siteMeta?.homepage?.hero?.elevatorPitch || 'I build modern, accessible front-ends and small full-stack apps using React, Next.js and a healthy dose of curiosity.'}
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/portfolio">
+                <Button variant="outline" className="border-white text-white hover:bg-white/20">
+>>>>>>> Stashed changes
                   View Portfolio
                 </Button>
               </Link>
 
               <Link href="/blog">
+<<<<<<< Updated upstream
                 <Button
                   variant="outline"
                   className="border-white text-white hover:bg-white/40 px-5 py-2 sm:px-6 sm:py-3"
                 >
+=======
+                <Button variant="outline" className="border-white text-white hover:bg-white/20">
+>>>>>>> Stashed changes
                   Read Blog
                 </Button>
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
+<<<<<<< Updated upstream
       {/* Social Icons */}
       <section className="py-10 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -130,8 +204,246 @@ export default function HomePage() {
               </svg>
             </a>
           </div>
+=======
+      {/* About Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-navy">About</h2>
+            {isEditing && isAdmin ? (
+              <EditableAbout
+                content={siteMeta?.homepage?.about?.html || ''}
+                onSave={handleAboutUpdate}
+                onChange={() => setPendingChanges(true)}
+              />
+            ) : (
+              <div
+                className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html: siteMeta?.homepage?.about?.html || '<p>Hi — I\'m Niyati Garg. I build modern, accessible front-ends and small full-stack apps using React, Next.js and a healthy dose of curiosity.</p><p>I focus on clean UI, thoughtful interactions, and shipping features that make people\'s lives easier.</p><p>I\'ve worked on projects ranging from e-commerce scan-and-go experiences to personal projects exploring emotion detection using cameras.</p><p>If you\'re here to explore my work, the gallery and latest blog posts are below — everything on this site can be edited from the admin panel when I\'m logged in.</p>',
+                }}
+              />
+            )}
+          </motion.div>
+>>>>>>> Stashed changes
         </div>
       </section>
+
+      {/* Gallery Preview */}
+      {gallery.length > 0 && (
+        <section className="py-16 bg-[#f7f9fc]">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-3xl md:text-4xl font-bold text-navy">Gallery</h2>
+                {gallery.length >= 6 && (
+                  <Link href="/gallery" className="text-coral hover:underline">
+                    View All →
+                  </Link>
+                )}
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {gallery.slice(0, 6).map((img) => (
+                  <div
+                    key={img.id}
+                    className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group"
+                    onClick={() => setLightboxImage(img.url)}
+                  >
+                    <Image
+                      src={img.url}
+                      alt={img.alt || 'Gallery image'}
+                      fill
+                      className="object-cover transition-transform group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* Latest Blog Posts */}
+      {latestBlogs.length > 0 && (
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-3xl md:text-4xl font-bold text-navy">Latest Blog Posts</h2>
+                <Link href="/blog" className="text-coral hover:underline">
+                  View All →
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {latestBlogs.map((blog) => (
+                  <Link key={blog.id} href={blog.slug ? `/blog/${blog.slug}` : `/blog/${blog.id}`}>
+                    <motion.div
+                      whileHover={{ y: -4 }}
+                      className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+                    >
+                      {blog.thumbnailUrl && (
+                        <div className="relative h-48 w-full">
+                          <Image
+                            src={blog.thumbnailUrl}
+                            alt={blog.title}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                      <div className="p-6">
+                        <h3 className="text-xl font-semibold mb-2 text-navy">{blog.title}</h3>
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                          {blog.excerpt || blog.content.substring(0, 150)}
+                        </p>
+                        <div className="flex items-center justify-between text-sm text-gray-500">
+                          <span>
+                            {blog.publishedAt
+                              ? format(new Date(blog.publishedAt), 'MMM d, yyyy')
+                              : format(new Date(blog.createdAt), 'MMM d, yyyy')}
+                          </span>
+                          {blog.category && (
+                            <span className="px-2 py-1 bg-gray-100 rounded">{blog.category.name}</span>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* Footer */}
+      <footer className="bg-navy text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Contact</h3>
+              <Link href="/contact" className="text-gray-300 hover:text-coral">
+                Get in touch
+              </Link>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Social</h3>
+              <div className="flex gap-4">
+                <a
+                  href="https://github.com/NiyatiGarg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-coral"
+                  aria-label="GitHub"
+                >
+                  GitHub
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/niyati-garg-59b385211/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-coral"
+                  aria-label="LinkedIn"
+                >
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Explore</h3>
+              <div className="flex flex-col gap-2">
+                <Link href="/portfolio" className="text-gray-300 hover:text-coral">
+                  Portfolio
+                </Link>
+                <Link href="/blog" className="text-gray-300 hover:text-coral">
+                  Blog
+                </Link>
+                <Link href="/about" className="text-gray-300 hover:text-coral">
+                  About
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+            <p>© {new Date().getFullYear()} Niyati Garg. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* Lightbox */}
+      {lightboxImage && (
+        <div
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          onClick={() => setLightboxImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <Image
+              src={lightboxImage}
+              alt="Gallery"
+              width={1200}
+              height={800}
+              className="object-contain max-h-[90vh]"
+            />
+            <button
+              onClick={() => setLightboxImage(null)}
+              className="absolute top-4 right-4 text-white text-2xl hover:text-coral"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+<<<<<<< Updated upstream
+=======
+
+function EditableAbout({
+  content,
+  onSave,
+  onChange,
+}: {
+  content: string;
+  onSave: (html: string) => void;
+  onChange: () => void;
+}) {
+  const [html, setHtml] = useState(content);
+
+  return (
+    <div>
+      <textarea
+        value={html}
+        onChange={(e) => {
+          setHtml(e.target.value);
+          onChange();
+        }}
+        className="w-full min-h-[300px] p-4 border border-gray-300 rounded-lg"
+        placeholder="Enter HTML content..."
+      />
+      <div className="mt-4 flex gap-2">
+        <Button onClick={() => onSave(html)} size="sm">
+          Save About Section
+        </Button>
+      </div>
+    </div>
+  );
+}
+>>>>>>> Stashed changes

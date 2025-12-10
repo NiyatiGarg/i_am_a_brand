@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
-import { AuthProvider } from '@/context/AuthContext';
+import { Providers } from '@/components/Providers';
 import { Toaster } from 'react-hot-toast';
 import { Navbar } from '@/components/Navbar';
 
@@ -20,11 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
+        <Providers>
           <Navbar />
           {children}
           <Toaster position="top-right" />
-        </AuthProvider>
+        </Providers>
       </body>
     </html>
   );
